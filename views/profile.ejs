@@ -1,0 +1,47 @@
+<%- include('partials/header'); -%>
+
+<h1 style="text-align: center;">View/Edit Profile</h1>
+<form action="/profile" >
+    <label for="email">Enter Email:</label>
+    <input type="text" name="email" value="<%= user.email %>" required />
+    
+    <label for="firstname">Enter FirstName:</label>
+    <input type="text" name="firstname" value="<%= user.firstname %>" required />
+
+    <label for="secondname">Enter SecondName:</label>
+    <input type="text" name="secondname" value="<%= user.secondname %>" required />
+
+    <label for="contactno">Enter Contact-Number:</label>
+    <input type="text" name="contactno" value="<%= user.contactno %>" required />
+    
+    <button>Update Profile</button>
+    
+</form>
+
+
+<%- include('partials/footer'); -%>
+
+<script>
+    const form = document.querySelector('form');
+    form.addEventListener('submit', async (e) => {
+      // get values
+      const email = form.email.value;
+      const firstname=form.firstname.value;
+      const secondname = form.secondname.value;
+      const contactno = form.contactno.value;
+      try {
+        const res = await fetch('/profile', { 
+          method: 'PUT', 
+          body: JSON.stringify({ email,firstname,secondname,contactno }),
+          headers: {'Content-Type': 'application/json'}
+        });
+        const data = await res.json();
+        if (data.user) {
+          location.assign('/');
+        }
+      }
+      catch (err) {
+        console.log(err);
+      }
+    });
+  </script>
